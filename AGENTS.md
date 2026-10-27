@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Auth: sign-in lives at /auth, sign-up at /signup; signed-in pages go under src/routes/_authenticated/ (client-only gate). Why: one consistent auth gate.
