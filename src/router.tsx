@@ -1,16 +1,31 @@
-import { QueryClient } from "@tanstack/react-query";
-import { createRouter } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
+import { createBrowserRouter, type RouteObject } from "react-router";
 
-export const getRouter = () => {
-  const queryClient = new QueryClient();
+import { RootLayout, RootErrorBoundary, NotFoundPage } from "@/components/RootLayout";
+import { RequireAuth } from "@/components/RequireAuth";
+import { IndexPage } from "@/pages/IndexPage";
+import { SignInPage } from "@/pages/SignInPage";
+import { SignUpPage } from "@/pages/SignUpPage";
+import { AppPage } from "@/pages/AppPage";
 
-  const router = createRouter({
-    routeTree,
-    context: { queryClient },
-    scrollRestoration: true,
-    defaultPreloadStaleTime: 0,
-  });
+// Client-side routes. Vercel rewrites every non-file path to index.html
+// (see vercel.json), so deep links like /app resolve here in the browser.
+export const routes: RouteObject[] = [
+  {
+    path: "/",
+    element: <RootLayout />,
+    errorElement: <RootErrorBoundary />,
+    children: [
+      { index: true, element: <IndexPage /> },
+      { path: "auth", element: <SignInPage /> },
+      { path: "signup", element: <SignUpPage /> },
+      {
+        // Signed-in pages live under this client-only auth gate.
+        element: <RequireAuth />,
+        children: [{ path: "app", element: <AppPage /> }],
+      },
+      { path: "*", element: <NotFoundPage /> },
+    ],
+  },
+];
 
-  return router;
-};
+export const router = createBrowserRouter(routes);
