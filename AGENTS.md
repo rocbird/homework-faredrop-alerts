@@ -9,4 +9,5 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- Auth: sign-in lives at /auth, sign-up at /signup; signed-in pages go under src/routes/_authenticated/ (client-only gate). Why: one consistent auth gate.
+- Stack: plain Vite + React SPA with React Router (no SSR, no server functions). Routes are declared in src/router.tsx; pages live in src/pages/. `vite build` emits a static site to dist/, and vercel.json rewrites every path to index.html so deep links resolve client-side.
+- Auth: sign-in lives at /auth, sign-up at /signup; signed-in pages go under the `<RequireAuth />` route in src/router.tsx (client-only gate). Why: one consistent auth gate.
